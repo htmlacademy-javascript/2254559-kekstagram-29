@@ -3,9 +3,9 @@
 
 function stringValidation(string, maxLength) {
   if (string.length <= maxLength) {
-    return(true);
+    return true;
   } else {
-    return(false);
+    return false;
   }
 }
 
