@@ -1,13 +1,7 @@
 /* Функция для проверки длины принимает строку, которую нужно проверить, и максимальную длину
 и возвращает true, если строка меньше или равна указанной длине, и false, если строка длиннее. */
 
-function stringValidation(string, maxLength) {
-  if (string.length <= maxLength) {
-    return true;
-  } else {
-    return false;
-  }
-}
+const stringValidation = (string, maxLength) => string.length <= maxLength;
 
 stringValidation('проверяемая строка', 20);
 
@@ -24,11 +18,7 @@ function polyndromCheck(string) {
     newString += normalizeString[i];
   }
 
-  if (newString === normalizeString) {
-    return true;
-  } else {
-    return false;
-  }
+  return (newString === normalizeString);
 }
 
 polyndromCheck('Лёша на полке клопа нашёл ');
@@ -37,23 +27,19 @@ polyndromCheck('Лёша на полке клопа нашёл ');
 целого положительного числа. Если в строке нет ни одной цифры, функция должна вернуть NaN */
 
 function extractionNumber(string) {
-  let newString ='';
+  let newString = '';
   let symbol;
   let number;
   string = string.toString();
 
   for (let i = 0; i <= string.length - 1; i++) {
-    symbol = parseInt(string[i]);
+    symbol = parseInt(string[i], 10);
     if (!Number.isNaN(symbol)) {
       newString += string[i];
     }
   }
-  number = parseInt(newString);
-  if(!Number.isNaN(number)) {
-    return number;
-  } else {
-     return NaN;
-    }
+  number = parseInt(newString, 10);
+  return (!Number.isNaN(number)) ? number : NaN;
 }
 
 extractionNumber('2023 год');
