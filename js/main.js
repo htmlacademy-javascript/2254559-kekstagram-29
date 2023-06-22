@@ -1,40 +1,13 @@
-// Объект - фотография с описанием. Состоит из 5 ключей:
-const userPhoto = {
-  // id (число)- идентификатор опубликованной фотографии (рандом от 1 до 25, не повторяется)
-  id: 0,
-  // url(строка) - адрес картинки вида photos/{{i}}.jpg, где {{i}} — это число от 1 до 25.
-  // Адреса картинок не должны повторяться.)
-  url: '',
-
-  // description (строка) — описание фотографии. Описание придумайте самостоятельно.
-  description: 'Описание фотографии',
-  // likes (число) — количество лайков, поставленных фотографии. Случайное число от 15 до 200.
-  likes: 0,
-
-  /* comments, массив объектов — список комментариев, оставленных другими пользователями к этой фотографии.
-  Количество комментариев к каждой фотографии — случайное число от 0 до 30.
-  Все комментарии генерируются случайным образом.
-  Объекты массива комментария:
-  - id — любое число. Идентификаторы не должны повторяться.
-  - avatar — это строка, значение которой формируется по
-  правилу img/avatar-{{случайное число от 1 до 6}}.svg. Аватарки подготовлены в директории img.
-  - Для формирования текста комментария — message — вам необходимо взять одно или два случайных предложения из представленных ниже:
-  */
- comments: [{
-  id: 0,
-  avatar: '',
-  message: '',
-  name: ''
- }]
-}
 // Массив с описаниями
-const DESCRIPTION =[
+const DESCRIPTION = [
   'Как-то так!',
   'Какая прелесть!',
   'Захотелось запечатлить эту картину',
   'Я думаю этот кадр прекрасен!',
   'Как вам такое?',
-]
+  'Вот это я поймал кадр!!!',
+  'Хейтеры - мимо =)'
+];
 
 //Массив с комментариями
 const MESSAGE_TEXT = [
@@ -45,6 +18,7 @@ const MESSAGE_TEXT = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
+
 // Массив имен комментаторов
 const NAMES = [
   'Александр',
@@ -55,11 +29,13 @@ const NAMES = [
   'Ольга'
 ];
 
-//Задаем количество фотографий на страниц и максимальное кол-во комментариев под фотографиями
+//Константы
 const NUMBER_PHOTOS_ON_PAGE = 25;
 const MAX_NUMBER_COMMENTS = 30;
 const MIN_NUMBER_LIKES = 15;
 const MAX_NUMBER_LIKES = 200;
+const MIN_NUMBER_MESSAGES = 1;
+const MAX_NUMBER_MESSAGES = 2;
 
 // Функция для генерации случайного числа в заданном диапазоне значений.
 const getRandomInteger = (min, max) => {
@@ -81,30 +57,42 @@ const getRandomIdFromRange = (min, max) => {
   };
 };
 
-// функция для генерации фотографии 1 пользователя на странице
-const createUserPhoto = () => {
-  const randomIdUser = getRandomIdFromRange(1, NUMBER_PHOTOS_ON_PAGE);
-  const randomAddress = getRandomIdFromRange(1, NUMBER_PHOTOS_ON_PAGE);
-  const randomNumberLikes = getRandomInteger(MIN_NUMBER_LIKES, MAX_NUMBER_LIKES);
-  const randomDescription = getRandomInteger(0, DESCRIPTION.length - 1);
-  const randomAvatar = 'img/avatar-' + getRandomInteger(1, 6) + '.svg';
-  const randomIdComment = getRandomIdFromRange(0, MAX_NUMBER_COMMENTS);
-  const randomCommentMessage = getRandomInteger(0, MESSAGE_TEXT.length - 1);
-  const randomNameCommentator = getRandomInteger(0, NAMES.length - 1);
-  //const randomNumberComments = getRandomInteger(0, MAX_NUMBER_COMMENTS);
-  return {
-    id: randomIdUser(),
-    url: 'photos/' + randomAddress() + '.jpg',
-    description: DESCRIPTION[randomDescription],
-    likes: randomNumberLikes,
-    comments: [{
-      id: randomIdComment(),
-      avatar : randomAvatar,
-      message: MESSAGE_TEXT[randomCommentMessage],
-      name: NAMES[randomNameCommentator]
-    }]
-  };
-}
+// создание массивов случайных чисел в заданном диапазоне
+const arrayRandomIdPhoto = Array.from({length: 25}, getRandomIdFromRange(1,NUMBER_PHOTOS_ON_PAGE));
+const arrayRandomIdAddress = Array.from({length: 25}, getRandomIdFromRange(1,NUMBER_PHOTOS_ON_PAGE));
 
-const page = Array.from({length: NUMBER_PHOTOS_ON_PAGE}, createUserPhoto);
+// функция для выбора случайного элемента массива
+const getrandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
+
+//Функция создания сообщений в комментарии
+const createMessage = () => {
+  if (getRandomInteger(MIN_NUMBER_MESSAGES, MAX_NUMBER_MESSAGES) === 1) {
+    return getrandomArrayElement(MESSAGE_TEXT);
+  }
+  return getrandomArrayElement(MESSAGE_TEXT) + ' ' + getrandomArrayElement(MESSAGE_TEXT);
+};
+
+//функция создания комментариев
+const createComments = (id) => {
+  const comments = [{
+    id: ++id,
+    avatar: 'img/avatar-' + getRandomInteger(1, 6) + '.svg',
+    message: createMessage(),
+    name: getrandomArrayElement(NAMES)
+  }];
+
+  return comments;
+};
+
+// функция для генерации фотографии 1 пользователя на странице
+const createUserPhoto = (id) => ({
+  id: arrayRandomIdPhoto[id],
+  url: 'photos/' + arrayRandomIdAddress[id] + '.jpg',
+  description: getrandomArrayElement(DESCRIPTION),
+  likes: getRandomInteger(MIN_NUMBER_LIKES, MAX_NUMBER_LIKES),
+  comments: Array.from({length: getRandomInteger(0, MAX_NUMBER_COMMENTS)}, (_, index) => createComments(index))
+});
+
+const page = Array.from({length: NUMBER_PHOTOS_ON_PAGE}, (_, index) => createUserPhoto(index));
+
 console.log(page);
