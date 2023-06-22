@@ -74,12 +74,12 @@ const createMessage = () => {
 
 //функция создания комментариев
 const createComments = (id) => {
-  const comments = [{
+  const comments = {
     id: ++id,
     avatar: 'img/avatar-' + getRandomInteger(1, 6) + '.svg',
     message: createMessage(),
     name: getrandomArrayElement(NAMES)
-  }];
+  };
 
   return comments;
 };
@@ -93,6 +93,6 @@ const createUserPhoto = (id) => ({
   comments: Array.from({length: getRandomInteger(0, MAX_NUMBER_COMMENTS)}, (_, index) => createComments(index))
 });
 
-const page = Array.from({length: NUMBER_PHOTOS_ON_PAGE}, (_, index) => createUserPhoto(index));
+const createArrayPhotos = Array.from({length: NUMBER_PHOTOS_ON_PAGE}, (_, index) => createUserPhoto(index));
 
-console.log(page);
+console.log(createArrayPhotos);
