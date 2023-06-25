@@ -1,4 +1,5 @@
 import './data.js';
 import './util.js';
-import './create-functions.js';
-import './function.js';
+import {createArrayPhotos} from './create-functions.js';
+
+console.log(createArrayPhotos);
