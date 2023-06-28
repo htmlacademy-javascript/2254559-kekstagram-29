@@ -43,3 +43,18 @@ function extractionNumber(string) {
 }
 
 extractionNumber('2023 год');
+
+const checkMeetingTime = (startWorkDayTime, endWorkDayTime, startMeetingTime, meetingDurationTime) => {
+  const timeInMinutes = (timeOfClock) => {
+    const timeSplit = timeOfClock.split(':');
+    return Number(timeSplit[0]) * 60 + Number(timeSplit[1]);
+  };
+
+  return timeInMinutes(startMeetingTime) >= timeInMinutes(startWorkDayTime) && timeInMinutes(startMeetingTime) + meetingDurationTime <= timeInMinutes(endWorkDayTime);
+};
+
+console.log(checkMeetingTime('08:00', '17:30', '14:00', 90));
+console.log(checkMeetingTime('8:0', '10:0', '8:0', 120));
+console.log(checkMeetingTime('08:00', '14:30', '14:00', 90));
+console.log(checkMeetingTime('14:00', '17:30', '08:0', 90));
+console.log(checkMeetingTime('8:00', '17:30', '08:00', 900));
