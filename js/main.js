@@ -1,3 +1,5 @@
-import {createArrayPhotos} from './create-functions.js';
+import {createArrayPhotos} from './create-photos.js';
+import {renderThumbnails} from './thumbnail.js';
 
-console.log(createArrayPhotos);
+
+renderThumbnails(createArrayPhotos);
