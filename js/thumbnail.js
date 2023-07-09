@@ -1,3 +1,5 @@
+import {createBigPhoto, openBigPhotoModal} from './create-big-photo.js';
+
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const containerElement = document.querySelector('.pictures');
 
@@ -16,9 +18,13 @@ const renderThumbnails = (pictures) => {
   const fragment = document.createDocumentFragment();
   pictures.forEach((picture) => {
     const thumbnail = createThumbnail(picture);
+    thumbnail.addEventListener('click', () => {
+      createBigPhoto(picture);
+      openBigPhotoModal();
+    });
     fragment.append(thumbnail);
   });
   containerElement.append(fragment);
 };
 
-export {renderThumbnails};
+export {renderThumbnails, createThumbnail};

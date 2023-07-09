@@ -27,4 +27,5 @@ const arrayRandomIdAddress = Array.from({length: 25}, getRandomIdFromRange(1,NUM
 // функция для выбора случайного элемента массива
 const getrandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
+
 export {arrayRandomIdPhoto, arrayRandomIdAddress, getrandomArrayElement, getRandomInteger};
