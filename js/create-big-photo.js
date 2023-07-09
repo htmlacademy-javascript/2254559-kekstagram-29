@@ -10,8 +10,8 @@ const commentsContainerElement = document.querySelector('.social__comments');
 const openBigPhotoModal = () => {
   bigPhotoModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  commentsCountElement.classList.add('hidden');
-  commentsLoaderElement.classList.add('hidden');
+  // commentsCountElement.classList.add('hidden');
+  // commentsLoaderElement.classList.add('hidden');
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
@@ -37,7 +37,6 @@ const onDocumentKeydown = (evt) => {
 };
 
 //функция создания комментария
-
 const createComment = ({ avatar, name, message }) => {
   const commentElement = commentTemplate.cloneNode(true);
 
@@ -52,10 +51,16 @@ const createComment = ({ avatar, name, message }) => {
 const renderComments = (comments) => {
   commentsContainerElement.innerHTML = '';
   const fragment = document.createDocumentFragment();
-  comments.forEach((comment) => {
-    const commentElement = createComment(comment);
+
+  for (let i = 0; i < 5; i++) {
+    const commentElement = createComment(comments[i]);
     fragment.append(commentElement);
-  });
+  }
+
+  // comments.forEach((comment) => {
+  //   const commentElement = createComment(comment);
+  //   fragment.append(commentElement);
+  // });
 
   commentsContainerElement.append(fragment);
 };
