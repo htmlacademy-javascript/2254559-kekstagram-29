@@ -1,10 +1,12 @@
-
+const COMMENTS_SHOWN_PER_CLICK = 5;
 const bigPhotoModal = document.querySelector('.big-picture');
 const closeButtonModalElement = bigPhotoModal.querySelector('.big-picture__cancel');
 const commentsCountElement = bigPhotoModal.querySelector('.social__comment-count');
 const commentsLoaderElement = bigPhotoModal.querySelector('.comments-loader');
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
 const commentsContainerElement = document.querySelector('.social__comments');
+
+let commentsShown = 0;
 
 //открытие модального окна
 const openBigPhotoModal = () => {
@@ -49,14 +51,14 @@ const createComment = ({ avatar, name, message }) => {
 
 //функция создания комментариев
 const renderComments = (comments) => {
-  commentsContainerElement.innerHTML = '';
+  commentsShown += COMMENTS_SHOWN_PER_CLICK;
   const fragment = document.createDocumentFragment();
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < commentsShown; i++) {
     const commentElement = createComment(comments[i]);
     fragment.append(commentElement);
   }
-
+  commentsContainerElement.innerHTML = '';
   // comments.forEach((comment) => {
   //   const commentElement = createComment(comment);
   //   fragment.append(commentElement);
