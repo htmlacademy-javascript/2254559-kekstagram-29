@@ -20,7 +20,7 @@ const renderThumbnails = (pictures) => {
     const thumbnail = createThumbnail(picture);
     thumbnail.addEventListener('click', () => {
       createBigPhoto(picture);
-      openBigPhotoModal();
+      openBigPhotoModal(picture);
     });
     fragment.append(thumbnail);
   });
