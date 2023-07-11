@@ -1,7 +1,11 @@
+import { arrayPhotos } from './create-user-photos.js';
+
 const COMMENTS_SHOWN_PER_CLICK = 5;
+
 const bigPhotoModal = document.querySelector('.big-picture');
 const closeButtonModalElement = bigPhotoModal.querySelector('.big-picture__cancel');
-const commentsCountElement = bigPhotoModal.querySelector('.social__comment-count');
+const commentsShownCountElement = bigPhotoModal.querySelector('.social__comment-count');
+const commentsCountElement = bigPhotoModal.querySelector('.comments-count');
 const commentsLoaderElement = bigPhotoModal.querySelector('.comments-loader');
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
 const commentsContainerElement = document.querySelector('.social__comments');
@@ -12,8 +16,6 @@ let commentsShown = 0;
 const openBigPhotoModal = () => {
   bigPhotoModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  // commentsCountElement.classList.add('hidden');
-  // commentsLoaderElement.classList.add('hidden');
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
@@ -22,7 +24,7 @@ const closeBigPhotoModal = () => {
   bigPhotoModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
-
+  commentsShown = 0;
 };
 
 //обработчик события закрытия модального окна по клику на кнопку
@@ -31,12 +33,12 @@ closeButtonModalElement.addEventListener('click', () => {
 });
 
 //функция закрытия модального окна по ESC
-const onDocumentKeydown = (evt) => {
+function onDocumentKeydown (evt) {
   evt.preventDefault();
   if (evt.key === 'Escape') {
     closeBigPhotoModal();
   }
-};
+}
 
 //функция создания комментария
 const createComment = ({ avatar, name, message }) => {
@@ -46,7 +48,7 @@ const createComment = ({ avatar, name, message }) => {
   commentElement.querySelector('.social__picture').alt = name;
   commentElement.querySelector('.social__text').textContent = message;
 
-  return commentElement
+  return commentElement;
 };
 
 //функция создания комментариев
@@ -54,17 +56,17 @@ const renderComments = (comments) => {
   commentsShown += COMMENTS_SHOWN_PER_CLICK;
   const fragment = document.createDocumentFragment();
 
+  if (commentsShown >= comments.length) {
+    commentsShown = comments.length;
+    commentsLoaderElement.classList.add('hidden');
+  }
   for (let i = 0; i < commentsShown; i++) {
     const commentElement = createComment(comments[i]);
     fragment.append(commentElement);
   }
   commentsContainerElement.innerHTML = '';
-  // comments.forEach((comment) => {
-  //   const commentElement = createComment(comment);
-  //   fragment.append(commentElement);
-  // });
-
   commentsContainerElement.append(fragment);
+  commentsShownCountElement.textContent = commentsShown + ' из ' + comments.length + ' комментариев';
 };
 
 //функция создания большой фотографии с данными для модального окна
@@ -76,7 +78,7 @@ const createBigPhoto = (data) => {
   renderComments(data.comments);
 };
 
+const oncommentsLoaderElementClick = () => renderComments(arrayPhotos.comments);
+commentsLoaderElement.addEventListener('click', oncommentsLoaderElementClick);
+
 export {createBigPhoto, openBigPhotoModal};
-
-
-
