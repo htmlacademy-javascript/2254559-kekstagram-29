@@ -17,16 +17,15 @@ const openBigPhotoModal = (data) => {
   bigPhotoModalElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
-  commentsLoaderElement.addEventListener('click', () => {
-    renderComments(data.comments)
-  }
-)};
+  commentsLoaderElement.addEventListener('click', onCommentsLoaderElementClick);
+};
 
 //закрытие модального окна
 const closeBigPhotoModal = () => {
   bigPhotoModalElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
+  commentsLoaderElement.removeEventListener('click', onCommentsLoaderElementClick);
   commentsShown = 0;
 };
 
@@ -35,13 +34,18 @@ closeButtonModalElement.addEventListener('click', () => {
   closeBigPhotoModal();
 });
 
+//функция закрытия модального окна по клику
+function onCommentsLoaderElementClick (data) {
+  renderComments(data.comments)
+};
+
 //функция закрытия модального окна по ESC
 function onDocumentKeydown (evt) {
   evt.preventDefault();
   if (evt.key === 'Escape') {
     closeBigPhotoModal();
   }
-}
+};
 
 //функция создания комментария
 const createComment = ({ avatar, name, message }) => {
@@ -56,7 +60,6 @@ const createComment = ({ avatar, name, message }) => {
 
 //функция создания комментариев
 const renderComments = (comments) => {
-  //let commentsShown = 0;
   commentsShown += COMMENTS_SHOWN_PER_CLICK;
   const fragment = document.createDocumentFragment();
 
