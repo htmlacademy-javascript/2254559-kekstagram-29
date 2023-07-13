@@ -45,10 +45,6 @@ const renderComments = (comments) => {
   commentsShownCountElement.textContent = commentsShown;
 };
 
-
-//функция закрытия модального окна по клику
-
-
 //открытие модального окна
 const openBigPhotoModal = (data) => {
   bigPhotoModalElement.classList.remove('hidden');
@@ -83,7 +79,7 @@ function onDocumentKeydown (evt) {
 }
 
 //функция создания большой фотографии с данными для модального окна
-const createBigPhoto = (data) => {
+const renderBigPhoto = (data) => {
   bigPhotoModalElement.querySelector('.big-picture__img img').src = data.url;
   bigPhotoModalElement.querySelector('.likes-count').textContent = data.likes;
   bigPhotoModalElement.querySelector('.comments-count').textContent = data.comments.length;
@@ -91,4 +87,4 @@ const createBigPhoto = (data) => {
   renderComments(data.comments);
 };
 
-export {createBigPhoto, openBigPhotoModal};
+export {renderBigPhoto, openBigPhotoModal};
