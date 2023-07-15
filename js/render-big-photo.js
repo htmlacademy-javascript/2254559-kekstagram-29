@@ -9,8 +9,6 @@ const commentsLoaderElement = bigPhotoModalElement.querySelector('.comments-load
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
 const commentsContainerElement = document.querySelector('.social__comments');
 
-let commentsShown = 0;
-
 //функция создания комментария
 const createComment = ({ avatar, name, message }) => {
   const commentElement = commentTemplate.cloneNode(true);
@@ -24,35 +22,44 @@ const createComment = ({ avatar, name, message }) => {
 
 //функция создания комментариев
 const renderComments = (comments) => {
-  commentsShown += COMMENTS_SHOWN_PER_CLICK;
-  const fragment = document.createDocumentFragment();
+  let commentsShown = 0;
 
-  if (commentsShown >= comments.length) {
-    commentsShown = comments.length;
-    commentsLoaderElement.classList.add('hidden');
-  } else {
-    commentsLoaderElement.classList.remove('hidden');
+  return () => {
+    commentsContainerElement.innerHTML = '';
+    commentsShown += COMMENTS_SHOWN_PER_CLICK;
+    const fragment = document.createDocumentFragment();
+
+    if (commentsShown >= comments.length) {
+      commentsShown = comments.length;
+      commentsLoaderElement.classList.add('hidden');
+    } else {
+      commentsLoaderElement.classList.remove('hidden');
+    }
+
+    for (let i = 0; i < commentsShown; i++) {
+      const commentElement = createComment(comments[i]);
+      fragment.append(commentElement);
+    }
+
+    commentsContainerElement.append(fragment);
+    commentsCountElement.textContent = comments.length;
+    commentsShownCountElement.textContent = commentsShown;
   }
-
-  for (let i = 0; i < commentsShown; i++) {
-    const commentElement = createComment(comments[i]);
-    fragment.append(commentElement);
-  }
-
-  commentsContainerElement.innerHTML = '';
-  commentsContainerElement.append(fragment);
-  commentsCountElement.textContent = comments.length;
-  commentsShownCountElement.textContent = commentsShown;
 };
 
 //открытие модального окна
 const openBigPhotoModal = (data) => {
+  const renderCommentsHandler = renderComments(data.comments)
+  bigPhotoModalElement.querySelector('.big-picture__img img').src = data.url;
+  bigPhotoModalElement.querySelector('.likes-count').textContent = data.likes;
+  bigPhotoModalElement.querySelector('.comments-count').textContent = data.comments.length;
+  bigPhotoModalElement.querySelector('.social__caption').textContent = data.description;
+  renderCommentsHandler();
   bigPhotoModalElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
-  const onCommentsLoaderElementClick = () => {
-    renderComments(data.comments);
-  };
+
+  const onCommentsLoaderElementClick = () => renderCommentsHandler();
   commentsLoaderElement.addEventListener('click', onCommentsLoaderElementClick);
 };
 
@@ -61,8 +68,6 @@ const closeBigPhotoModal = () => {
   bigPhotoModalElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
-  //commentsLoaderElement.removeEventListener('click', onCommentsLoaderElementClick);
-  commentsShown = 0;
 };
 
 //обработчик события закрытия модального окна по клику на кнопку
@@ -78,13 +83,4 @@ function onDocumentKeydown (evt) {
   }
 }
 
-//функция создания большой фотографии с данными для модального окна
-const renderBigPhoto = (data) => {
-  bigPhotoModalElement.querySelector('.big-picture__img img').src = data.url;
-  bigPhotoModalElement.querySelector('.likes-count').textContent = data.likes;
-  bigPhotoModalElement.querySelector('.comments-count').textContent = data.comments.length;
-  bigPhotoModalElement.querySelector('.social__caption').textContent = data.description;
-  renderComments(data.comments);
-};
-
-export {renderBigPhoto, openBigPhotoModal};
+export {openBigPhotoModal};

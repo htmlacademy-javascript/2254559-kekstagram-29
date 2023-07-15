@@ -1,4 +1,4 @@
-import {renderBigPhoto, openBigPhotoModal} from './render-big-photo.js';
+import {openBigPhotoModal} from './render-big-photo.js';
 
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const containerElement = document.querySelector('.pictures');
@@ -18,10 +18,7 @@ const renderThumbnails = (pictures) => {
   const fragment = document.createDocumentFragment();
   pictures.forEach((picture) => {
     const thumbnail = createThumbnail(picture);
-    thumbnail.addEventListener('click', () => {
-      renderBigPhoto(picture);
-      openBigPhotoModal(picture);
-    });
+    thumbnail.addEventListener('click', () => openBigPhotoModal(picture));
     fragment.append(thumbnail);
   });
   containerElement.append(fragment);
