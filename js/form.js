@@ -18,6 +18,9 @@ const closeUploadForm = () => {
   imgUploadWindow.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
+  imgUploadField.value = '';
+  hashtagsField.value = '';
+  descriptionField.value = '';
 };
 
 //обработчик открытия формы
@@ -34,10 +37,13 @@ function onDocumentKeydown (evt) {
   }
 }
 
-const pristine = new pristine;
+//валидация формы
+const pristine = new Pristine(imgUploadForm, {
+  classTo: 'img-upload__field-wrapper',
+  errorTextOarent: 'img-upload__field-wrapper',
+});
 
-//cброс полей после отправки
-
-// imgUploadField.value = '';
-// hashtagsField.value = '';
-// descriptionField.value = '';
+imgUploadForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  pristine.validate();
+});

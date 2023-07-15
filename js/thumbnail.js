@@ -18,7 +18,10 @@ const renderThumbnails = (pictures) => {
   const fragment = document.createDocumentFragment();
   pictures.forEach((picture) => {
     const thumbnail = createThumbnail(picture);
-    thumbnail.addEventListener('click', () => openBigPhotoModal(picture));
+    thumbnail.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      openBigPhotoModal(picture);
+    });
     fragment.append(thumbnail);
   });
   containerElement.append(fragment);
