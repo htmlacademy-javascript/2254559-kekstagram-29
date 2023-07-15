@@ -31,7 +31,7 @@ const createUserPhoto = (id) => ({
 });
 
 //создание массива рандомных фотографий
-const createArrayPhotos = Array.from({length: NUMBER_PHOTOS_ON_PAGE}, (_, index) => createUserPhoto(index));
+const arrayPhotos = Array.from({length: NUMBER_PHOTOS_ON_PAGE}, (_, index) => createUserPhoto(index));
 
-export {createArrayPhotos};
+export {arrayPhotos};
 
