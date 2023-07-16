@@ -1,6 +1,6 @@
 const MAX_COUNT_HASHTAGS = 5;
-
-const VALID_HASHTAG_ERROR_MESSAGE = 'Введен невалидный хештег';
+const VALID_HASHTAG_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+const VALID_HASHTAG_ERROR_MESSAGE = 'Использованы недопустимые символы';
 const UNIQ_HASHTAG_ERROR_MESSAGE = 'Хештеги не должны повторяться';
 const COUNT_HASHTAG_ERROR_MESSAGE = 'Максимальное количество хештегов - 5';
 
@@ -64,28 +64,53 @@ const pristine = new Pristine(form, {
 
 //подготовка текстовой строки хештега к проверке
 const normalizeHashtag = (textHashtag) => {
-  textHashtag.trim().split(' ').filter((tag) => Boolean(tag.length));
+  textHashtag.trim().split(' ').filter((hashtag) => Boolean(hashtag.length));
 };
 
-//проверка валидности хештега
-// const hasValidHashtag = () => {
+//проверка хештега на допустимость символов
+const hasValidHashtag = (value) => {
+  normalizeHashtag(value).every(
+    (item) => VALID_HASHTAG_SYMBOLS.test(item)
+  );
+}
 
-// }
+//валидатор по валидности символов
+pristine.addValidator(
+  hashtagsField,
+  hasValidHashtag,
+  VALID_HASHTAG_ERROR_MESSAGE,
+  2,
+  false
+);
 
 //проверка по количеству хештегов
 const hasValidCount = (value) => {
   normalizeHashtag(value).length <= MAX_COUNT_HASHTAGS;
 };
 
-//проверка на уникальность хештегов
-
-
-//добавление валидатора полю хештег
+// валидатор по кол-ву хештегов
 pristine.addValidator(
   hashtagsField,
   hasValidCount,
   COUNT_HASHTAG_ERROR_MESSAGE,
   3,
+  false
+);
+
+//проверка на уникальность хештегов
+const hasUniqHashtag = (value) => {
+  const lowerCaseHashtags = normalizeHashtag(value).map(
+    (item) => item.toLowerCase()
+  );
+  return lowerCaseHashtags.length === new Set(lowerCaseHashtags).size;
+};
+
+//валидатор уникальности хештегов
+pristine.addValidator(
+  hashtagsField,
+  hasUniqHashtag,
+  UNIQ_HASHTAG_ERROR_MESSAGE,
+  1,
   false
 );
 
