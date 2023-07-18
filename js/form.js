@@ -1,3 +1,5 @@
+import {resetScale, buttonScaleBigger, buttonScaleLittle, onButtonScaleBiggerClick, onButtonScaleLittleClick} from './scale.js';
+
 const MAX_COUNT_HASHTAGS = 5;
 const VALID_HASHTAG_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const VALID_HASHTAG_ERROR_MESSAGE = 'Использованы недопустимые символы';
@@ -89,6 +91,8 @@ const openForm = () => {
   hashtagsField.addEventListener('keydown', onTextFieldKeydown);
   descriptionField.addEventListener('keydown', onTextFieldKeydown);
   form.addEventListener('submit', onSubmit);
+  buttonScaleLittle.addEventListener('click', onButtonScaleLittleClick);
+  buttonScaleBigger.addEventListener('click', onButtonScaleBiggerClick);
 };
 
 //функция закрытия окна формы
@@ -102,6 +106,7 @@ const closeForm = () => {
   imgInputFieldForm.value = '';
   form.reset();
   pristine.reset();
+  resetScale();
 };
 
 //обработчик открытия формы
