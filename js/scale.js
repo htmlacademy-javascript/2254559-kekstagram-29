@@ -19,9 +19,9 @@ const onButtonScaleLittleClick = () => {
   const currentScaleValue = parseInt(scaleFieldElement.value, 10);
   const newScaleValue = currentScaleValue - STEP_SCALE;
   if (newScaleValue < MIN_SCALE) {
-    return scaleImage(MIN_SCALE);
+    scaleImage(MIN_SCALE);
   } else {
-    return scaleImage(newScaleValue);
+    scaleImage(newScaleValue);
   }
 };
 
@@ -29,9 +29,9 @@ const onButtonScaleBiggerClick = () => {
   const currentScaleValue = parseInt(scaleFieldElement.value, 10);
   const newScaleValue = currentScaleValue + STEP_SCALE;
   if (newScaleValue > MAX_SCALE) {
-    return scaleImage(MAX_SCALE);
+    scaleImage(MAX_SCALE);
   } else {
-    return scaleImage(newScaleValue);
+    scaleImage(newScaleValue);
   }
 };
 
