@@ -11,65 +11,23 @@ const closeButton = modalForm.querySelector('.img-upload__cancel');
 const hashtagsField = modalForm.querySelector('.text__hashtags');
 const descriptionField = modalForm.querySelector('.text__description');
 
-
-//функция открытия окна формы загрузки фотографии
-const openForm = () => {
-  modalForm.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKeydown);
-  hashtagsField.addEventListener('keydown', onTextFieldKeydown);
-  descriptionField.addEventListener('keydown', onTextFieldKeydown);
-};
-
-//функция закрытия окна формы
-const closeForm = () => {
-  modalForm.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onDocumentKeydown);
-  hashtagsField.removeEventListener('keydown', onTextFieldKeydown);
-  descriptionField.removeEventListener('keydown', onTextFieldKeydown);
-  imgInputFieldForm.value = '';
-  form.reset();
-  pristine.reset();
-};
-
-//обработчик открытия формы
-const onInputFieldChange = () => openForm();
-imgInputFieldForm.addEventListener('change', onInputFieldChange);
-
-//обработчик закрытия окна формы
-const onCloseButtonClick = () => closeForm();
-closeButton.addEventListener('click', onCloseButtonClick);
-
-//функция закрятия по нажатию ESC
-function onDocumentKeydown (evt) {
-  evt.preventDefault();
-  if (evt.key === 'Escape') {
-    closeForm();
-  }
-}
-
-//функция отмены закрытия модального окна, при фокусе полей хештег, комментарий
-function onTextFieldKeydown (evt) {
-  if (evt.key === 'Escape') {
-    evt.stopPropagation();
-  }
-}
-
 //валидация формы
-const pristine = new Pristine(form, {
+const pristine = new Pristine
+(form,
+{
   classTo: 'img-upload__field-wrapper',
-  errorTextOarent: 'img-upload__field-wrapper',
-});
+  errorTextParent: 'img-upload__field-wrapper',
+},
+false);
 
 //подготовка текстовой строки хештега к проверке
-const normalizeHashtag = (textHashtag) => {
-  textHashtag.trim().split(' ').filter((hashtag) => Boolean(hashtag.length));
+const normalizeHashtag = (text) => {
+  return text.trim().split(' ').filter((item) => Boolean(item.length));
 };
 
 //проверка хештега на допустимость символов
 const hasValidHashtag = (value) => {
-  normalizeHashtag(value).every(
+   return normalizeHashtag(value).every(
     (item) => VALID_HASHTAG_SYMBOLS.test(item)
   );
 }
@@ -85,7 +43,7 @@ pristine.addValidator(
 
 //проверка по количеству хештегов
 const hasValidCount = (value) => {
-  normalizeHashtag(value).length <= MAX_COUNT_HASHTAGS;
+  return normalizeHashtag(value).length <= MAX_COUNT_HASHTAGS;
 };
 
 // валидатор по кол-ву хештегов
@@ -114,7 +72,59 @@ pristine.addValidator(
   false
 );
 
-form.addEventListener('submit', (evt) => {
+// функция проверки при отправке
+const onSubmit = (evt) => {
   evt.preventDefault();
-  pristine.validate();
-});
+  const isValid = pristine.validate();
+  if (isValid) {
+    form.submit();
+  }
+};
+
+//функция открытия окна формы загрузки фотографии
+const openForm = () => {
+  modalForm.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  document.addEventListener('keydown', onDocumentKeydown);
+  hashtagsField.addEventListener('keydown', onTextFieldKeydown);
+  descriptionField.addEventListener('keydown', onTextFieldKeydown);
+  form.addEventListener('submit', onSubmit);
+};
+
+//функция закрытия окна формы
+const closeForm = () => {
+  modalForm.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  document.removeEventListener('keydown', onDocumentKeydown);
+  hashtagsField.removeEventListener('keydown', onTextFieldKeydown);
+  descriptionField.removeEventListener('keydown', onTextFieldKeydown);
+  form.removeEventListener('submit', onSubmit);
+  imgInputFieldForm.value = '';
+  form.reset();
+  pristine.reset();
+};
+
+//обработчик открытия формы
+const onInputFieldChange = () => openForm();
+imgInputFieldForm.addEventListener('change', onInputFieldChange);
+
+//обработчик закрытия окна формы
+const onCloseButtonClick = () => closeForm();
+closeButton.addEventListener('click', onCloseButtonClick);
+
+//функция закрятия по нажатию ESC
+const onDocumentKeydown = (evt) => {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    closeForm();
+  }
+}
+
+//функция отмены закрытия модального окна, при фокусе полей хештег, комментарий
+const onTextFieldKeydown = (evt) => {
+  if (evt.key === 'Escape') {
+    evt.stopPropagation();
+  }
+}
+
+
