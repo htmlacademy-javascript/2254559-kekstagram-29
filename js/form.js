@@ -1,5 +1,5 @@
 import {resetScale, buttonScaleBigger, buttonScaleLittle, onButtonScaleBiggerClick, onButtonScaleLittleClick} from './scale.js';
-import {createSlider} from './photo-effects.js';
+import {createSlider, destroySlider} from './photo-effects.js';
 
 const MAX_COUNT_HASHTAGS = 5;
 const VALID_HASHTAG_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -88,6 +88,7 @@ const onSubmit = (evt) => {
 const openForm = () => {
   modalForm.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  closeButton.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
   hashtagsField.addEventListener('keydown', onTextFieldKeydown);
   descriptionField.addEventListener('keydown', onTextFieldKeydown);
@@ -101,6 +102,7 @@ const openForm = () => {
 const closeForm = () => {
   modalForm.classList.add('hidden');
   document.body.classList.remove('modal-open');
+  closeButton.removeEventListener('click', onCloseButtonClick);
   document.removeEventListener('keydown', onDocumentKeydown);
   hashtagsField.removeEventListener('keydown', onTextFieldKeydown);
   descriptionField.removeEventListener('keydown', onTextFieldKeydown);
@@ -109,15 +111,16 @@ const closeForm = () => {
   form.reset();
   pristine.reset();
   resetScale();
+  destroySlider();
 };
 
 //обработчик открытия формы
 const onInputFieldChange = () => openForm();
 imgInputFieldForm.addEventListener('change', onInputFieldChange);
 
-//обработчик закрытия окна формы
+//функция закрытия окна формы
 const onCloseButtonClick = () => closeForm();
-closeButton.addEventListener('click', onCloseButtonClick);
+
 
 //функция закрятия по нажатию ESC
 const onDocumentKeydown = (evt) => {
