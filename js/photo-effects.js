@@ -1,4 +1,4 @@
-const elements = [
+const EFFECTS = [
   {
     name: 'original',
     filter: 'none',
@@ -60,16 +60,16 @@ const effectsListElement = modalFormElement.querySelector('.img-upload__effects'
 const createSlider = () => {
   noUiSlider.create(sliderElement, {
     range: {
-      min: elements[0].min,
-      max: elements[0].max,
+      min: EFFECTS[0].min,
+      max: EFFECTS[0].max,
     },
-    start: elements[0].max,
-    step: elements[0].step,
+    start: EFFECTS[0].max,
+    step: EFFECTS[0].step,
     connect: 'lower',
   });
 
+  previewPhotoElement.style.filter = 'none';
   sliderContainerElement.classList.add('hidden');
-  sliderElement.noUiSlider.on('update', onUpdateSliderValue);
 };
 
 //обновление данных слайдера
@@ -83,6 +83,14 @@ const updateSlider = (item) => {
     step: item.step,
     connect: 'lower',
   });
+
+  const onUpdateSliderValue = () => {
+    const sliderValue = sliderElement.noUiSlider.get();
+    sliderElementInput.setAttribute('value', sliderValue);
+    previewPhotoElement.style.filter = `${item.filter}(${sliderValue}${item.unit})`;
+  };
+
+  sliderElement.noUiSlider.on('update', onUpdateSliderValue);
 };
 
 
@@ -97,7 +105,7 @@ const getPhotoEfffect = (evt) => {
     sliderElementInput.value = '';
     } else {
       sliderContainerElement.classList.remove('hidden');
-      const effect = elements.find((item) => item.name === currentEffectValue);
+      const effect = EFFECTS.find((item) => item.name === currentEffectValue);
       previewPhotoElement.style.filter = `${effect.filter}(${effect.max}${effect.unit})`;
       updateSlider(effect);
     }
@@ -105,17 +113,13 @@ const getPhotoEfffect = (evt) => {
 };
 
 //функция обновления значений слайдера
-const onUpdateSliderValue = (effect) => {
-  const sliderValue = sliderElement.onUiSlider.get();
-  sliderElementInput.setAttribute('value', 'sliderValue');
-  previewPhotoElement.style.filter = `${effect.filter}(${sliderValue}${effect.unit})`;
-};
+
 
 effectsListElement.addEventListener('change', getPhotoEfffect);
 
 //удаление слайдера
 const destroySlider = () => {
-  sliderElement.onUiSlider.destroy();
+  sliderElement.noUiSlider.destroy();
 };
 
 
