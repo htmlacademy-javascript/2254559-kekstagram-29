@@ -105,11 +105,11 @@ const getPhotoEfffect = (evt) => {
 };
 
 //функция обновления значений слайдера
-// const onUpdateSliderValue = (effect) => {
-//   const sliderValue = sliderElement.onUiSlider.get();
-//   sliderElementInput.setAttribute('value', 'sliderValue');
-//   previewPhotoElement.style.filter = `${effect.filter}(${sliderValue}${effect.unit})`;
-// };
+const onUpdateSliderValue = (effect) => {
+  const sliderValue = sliderElement.onUiSlider.get();
+  sliderElementInput.setAttribute('value', 'sliderValue');
+  previewPhotoElement.style.filter = `${effect.filter}(${sliderValue}${effect.unit})`;
+};
 
 effectsListElement.addEventListener('change', getPhotoEfffect);
 
