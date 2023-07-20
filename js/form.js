@@ -1,4 +1,5 @@
 import {resetScale, buttonScaleBigger, buttonScaleLittle, onButtonScaleBiggerClick, onButtonScaleLittleClick} from './scale.js';
+import {createSlider} from './photo-effects.js';
 
 const MAX_COUNT_HASHTAGS = 5;
 const VALID_HASHTAG_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -93,6 +94,7 @@ const openForm = () => {
   form.addEventListener('submit', onSubmit);
   buttonScaleLittle.addEventListener('click', onButtonScaleLittleClick);
   buttonScaleBigger.addEventListener('click', onButtonScaleBiggerClick);
+  createSlider();
 };
 
 //функция закрытия окна формы
