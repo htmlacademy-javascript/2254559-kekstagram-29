@@ -1,19 +1,22 @@
+import {resetScale, buttonScaleBigger, buttonScaleLittle, onButtonScaleBiggerClick, onButtonScaleLittleClick} from './scale.js';
+import {createSlider, destroySlider} from './photo-effects.js';
+
 const MAX_COUNT_HASHTAGS = 5;
 const VALID_HASHTAG_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const VALID_HASHTAG_ERROR_MESSAGE = 'Использованы недопустимые символы';
 const UNIQ_HASHTAG_ERROR_MESSAGE = 'Хештеги не должны повторяться';
 const COUNT_HASHTAG_ERROR_MESSAGE = 'Максимальное количество хештегов - 5';
 
-const form = document.querySelector('.img-upload__form');
-const imgInputFieldForm = form.querySelector('.img-upload__input');
-const modalForm = form.querySelector('.img-upload__overlay');
-const closeButton = modalForm.querySelector('.img-upload__cancel');
-const hashtagsField = modalForm.querySelector('.text__hashtags');
-const descriptionField = modalForm.querySelector('.text__description');
+const formElement = document.querySelector('.img-upload__form');
+const imgInputFieldForm = formElement.querySelector('.img-upload__input');
+const modalForm = formElement.querySelector('.img-upload__overlay');
+const closeButtonElement = modalForm.querySelector('.img-upload__cancel');
+const hashtagsFieldElement = modalForm.querySelector('.text__hashtags');
+const descriptionFieldElement = modalForm.querySelector('.text__description');
 
 //валидация формы
 const pristine = new Pristine
-(form,
+(formElement,
 {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
@@ -34,7 +37,7 @@ const hasValidHashtag = (value) => {
 
 //валидатор по валидности символов
 pristine.addValidator(
-  hashtagsField,
+  hashtagsFieldElement,
   hasValidHashtag,
   VALID_HASHTAG_ERROR_MESSAGE,
   2,
@@ -48,7 +51,7 @@ const hasValidCount = (value) => {
 
 // валидатор по кол-ву хештегов
 pristine.addValidator(
-  hashtagsField,
+  hashtagsFieldElement,
   hasValidCount,
   COUNT_HASHTAG_ERROR_MESSAGE,
   3,
@@ -65,7 +68,7 @@ const hasUniqHashtag = (value) => {
 
 //валидатор уникальности хештегов
 pristine.addValidator(
-  hashtagsField,
+  hashtagsFieldElement,
   hasUniqHashtag,
   UNIQ_HASHTAG_ERROR_MESSAGE,
   1,
@@ -77,7 +80,7 @@ const onSubmit = (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
-    form.submit();
+    formElement.submit();
   }
 };
 
@@ -85,32 +88,39 @@ const onSubmit = (evt) => {
 const openForm = () => {
   modalForm.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  closeButtonElement.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
-  hashtagsField.addEventListener('keydown', onTextFieldKeydown);
-  descriptionField.addEventListener('keydown', onTextFieldKeydown);
-  form.addEventListener('submit', onSubmit);
+  hashtagsFieldElement.addEventListener('keydown', onTextFieldKeydown);
+  descriptionFieldElement.addEventListener('keydown', onTextFieldKeydown);
+  formElement.addEventListener('submit', onSubmit);
+  buttonScaleLittle.addEventListener('click', onButtonScaleLittleClick);
+  buttonScaleBigger.addEventListener('click', onButtonScaleBiggerClick);
+  createSlider();
 };
 
 //функция закрытия окна формы
 const closeForm = () => {
   modalForm.classList.add('hidden');
   document.body.classList.remove('modal-open');
+  closeButtonElement.removeEventListener('click', onCloseButtonClick);
   document.removeEventListener('keydown', onDocumentKeydown);
-  hashtagsField.removeEventListener('keydown', onTextFieldKeydown);
-  descriptionField.removeEventListener('keydown', onTextFieldKeydown);
-  form.removeEventListener('submit', onSubmit);
+  hashtagsFieldElement.removeEventListener('keydown', onTextFieldKeydown);
+  descriptionFieldElement.removeEventListener('keydown', onTextFieldKeydown);
+  formElement.removeEventListener('submit', onSubmit);
   imgInputFieldForm.value = '';
-  form.reset();
+  formElement.reset();
   pristine.reset();
+  resetScale();
+  destroySlider();
 };
 
 //обработчик открытия формы
 const onInputFieldChange = () => openForm();
 imgInputFieldForm.addEventListener('change', onInputFieldChange);
 
-//обработчик закрытия окна формы
+//функция закрытия окна формы
 const onCloseButtonClick = () => closeForm();
-closeButton.addEventListener('click', onCloseButtonClick);
+
 
 //функция закрятия по нажатию ESC
 const onDocumentKeydown = (evt) => {
