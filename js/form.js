@@ -79,8 +79,16 @@ pristine.addValidator(
 const onSubmit = (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
+
   if (isValid) {
-    formElement.submit();
+    const formData = new FormData(evt.target);
+    fetch(
+      'https://29.javascript.pages.academy/kekstagram',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    );
   }
 };
 
