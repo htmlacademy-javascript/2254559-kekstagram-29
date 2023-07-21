@@ -61,19 +61,21 @@ const openBigPhotoModal = (data) => {
 
   const onCommentsLoaderElementClick = () => renderCommentsHandler();
   commentsLoaderElement.addEventListener('click', onCommentsLoaderElementClick);
+  closeButtonModalElement.addEventListener('click', onCloseButtonModalElementClick);
 };
+
+
+const onCloseButtonModalElementClick = () => closeBigPhotoModal();
 
 //закрытие модального окна
 const closeBigPhotoModal = () => {
   bigPhotoModalElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
+  commentsLoaderElement.removeEventListener('click', onCloseButtonModalElementClick);
 };
 
-//обработчик события закрытия модального окна по клику на кнопку
-closeButtonModalElement.addEventListener('click', () => {
-  closeBigPhotoModal();
-});
+
 
 //функция закрытия модального окна по ESC
 function onDocumentKeydown (evt) {

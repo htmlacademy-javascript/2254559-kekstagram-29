@@ -66,6 +66,17 @@ const createSlider = () => {
     start: EFFECTS[0].max,
     step: EFFECTS[0].step,
     connect: 'lower',
+    format: {
+      to: function (value) {
+        if (Number.isInteger(value)) {
+          return value.toFixed(0);
+        }
+        return value.toFixed(1);
+      },
+      from: function (value) {
+        return parseFloat(value);
+      },
+    },
   });
 
   previewPhotoElement.style.filter = 'none';
