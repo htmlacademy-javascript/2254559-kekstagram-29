@@ -31,6 +31,8 @@ const showSuccessMessage = () => {
 
 const closeSuccessMessage = () => {
   bodyElement.querySelector('.success').remove();
+  bodyElement.removeEventListener('click', onCloseSuccessClickDocument);
+  bodyElement.removeEventListener('keydown', onCloseSuccessMessage);
 };
 
 
@@ -57,6 +59,8 @@ const showErrorMessage = () => {
 
 const closeErrorMessage = () => {
   bodyElement.querySelector('.error').remove();
+  bodyElement.removeEventListener('click', onCloseErrorClickDocument);
+  bodyElement.removeEventListener('keydown', onCloseErrorMessage);
 };
 
 export{showSuccessMessage, showErrorMessage};
