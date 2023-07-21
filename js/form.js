@@ -9,10 +9,11 @@ const COUNT_HASHTAG_ERROR_MESSAGE = 'Максимальное количеств
 
 const formElement = document.querySelector('.img-upload__form');
 const imgInputFieldForm = formElement.querySelector('.img-upload__input');
-const modalForm = formElement.querySelector('.img-upload__overlay');
-const closeButtonElement = modalForm.querySelector('.img-upload__cancel');
-const hashtagsFieldElement = modalForm.querySelector('.text__hashtags');
-const descriptionFieldElement = modalForm.querySelector('.text__description');
+const modalFormElement = formElement.querySelector('.img-upload__overlay');
+const closeButtonElement = modalFormElement.querySelector('.img-upload__cancel');
+const hashtagsFieldElement = modalFormElement.querySelector('.text__hashtags');
+const descriptionFieldElement = modalFormElement.querySelector('.text__description');
+const submitButtonFormElement = modalFormElement.querySelector('.img-upload__submit');
 
 //валидация формы
 const pristine = new Pristine
@@ -77,7 +78,7 @@ pristine.addValidator(
 
 // функция проверки при отправке
 const setUserFormSubmit = (onSuccess) => {
-  const onSubmit = (evt) => {
+  formElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
 
@@ -92,18 +93,30 @@ const setUserFormSubmit = (onSuccess) => {
       )
       .then(onSuccess);
     }
-  };
+  });
 };
+
+//Кнопка отправки формы
+const blockSubmitButton = () => {
+  submitButtonFormElement.disabled = true;
+  submitButtonFormElement.textContent = 'Отправка данных';
+};
+
+const unblockSubmitButton = () => {
+  submitButtonFormElement.disabled = false;
+  submitButtonFormElement.textContent = 'Опубликовать';
+};
+
 
 //функция открытия окна формы загрузки фотографии
 const openForm = () => {
-  modalForm.classList.remove('hidden');
+  modalFormElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   closeButtonElement.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
   hashtagsFieldElement.addEventListener('keydown', onTextFieldKeydown);
   descriptionFieldElement.addEventListener('keydown', onTextFieldKeydown);
-  formElement.addEventListener('submit', onSubmit);
+  // formElement.addEventListener('submit', onSubmit);
   buttonScaleLittle.addEventListener('click', onButtonScaleLittleClick);
   buttonScaleBigger.addEventListener('click', onButtonScaleBiggerClick);
   createSlider();
@@ -111,13 +124,13 @@ const openForm = () => {
 
 //функция закрытия окна формы
 const closeForm = () => {
-  modalForm.classList.add('hidden');
+  modalFormElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   closeButtonElement.removeEventListener('click', onCloseButtonClick);
   document.removeEventListener('keydown', onDocumentKeydown);
   hashtagsFieldElement.removeEventListener('keydown', onTextFieldKeydown);
   descriptionFieldElement.removeEventListener('keydown', onTextFieldKeydown);
-  formElement.removeEventListener('submit', onSubmit);
+  // formElement.removeEventListener('submit', onSubmit);
   imgInputFieldForm.value = '';
   formElement.reset();
   pristine.reset();

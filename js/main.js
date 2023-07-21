@@ -10,5 +10,5 @@ fetch('https://29.javascript.pages.academy/kekstagram/data')
   .then((response) => response.json())
   .then((usersPhoto) => renderThumbnails(usersPhoto));
 
-  showErrorMessage();
+
 
