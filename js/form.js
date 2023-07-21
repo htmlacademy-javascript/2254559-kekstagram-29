@@ -1,5 +1,5 @@
 import {resetScale, buttonScaleBigger, buttonScaleLittle, onButtonScaleBiggerClick, onButtonScaleLittleClick} from './scale.js';
-import {createSlider, destroySlider} from './photo-effects.js';
+import {createSlider, destroySlider} from './photo-effect.js';
 
 const MAX_COUNT_HASHTAGS = 5;
 const VALID_HASHTAG_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -76,20 +76,23 @@ pristine.addValidator(
 );
 
 // функция проверки при отправке
-const onSubmit = (evt) => {
-  evt.preventDefault();
-  const isValid = pristine.validate();
+const setUserFormSubmit = (onSuccess) => {
+  const onSubmit = (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
 
-  if (isValid) {
-    const formData = new FormData(evt.target);
-    fetch(
-      'https://29.javascript.pages.academy/kekstagram',
-      {
-        method: 'POST',
-        body: formData,
-      },
-    );
-  }
+    if (isValid) {
+      const formData = new FormData(evt.target);
+      fetch(
+        'https://29.javascript.pages.academy/kekstagram',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      )
+      .then(onSuccess);
+    }
+  };
 };
 
 //функция открытия окна формы загрузки фотографии
