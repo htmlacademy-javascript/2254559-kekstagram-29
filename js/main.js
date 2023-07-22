@@ -1,5 +1,5 @@
 import { renderThumbnails } from './thumbnail.js';
-import { showSuccessMessage, showErrorMessage, ErrorGetDataMessage } from './message.js';
+import { showSuccessMessage, showErrorMessage} from './message.js';
 import { closeForm, setUserFormSubmit } from './form.js';
 import { getData, sendData } from './api.js';
 import { showAlert } from './util.js';
