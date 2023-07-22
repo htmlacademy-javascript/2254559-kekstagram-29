@@ -7,6 +7,7 @@ const ErrorGetDataMessage = 'Не удалось загрузить данные
 const onDocumentKeydown = (evt, callback) => {
   if (evt.key === 'Escape') {
     evt.preventDefault();
+    evt.stopPropagation();
     callback();
   }
 };
