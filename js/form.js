@@ -1,6 +1,7 @@
 import { resetScale, buttonScaleBigger, buttonScaleLittle, onButtonScaleBiggerClick, onButtonScaleLittleClick } from './scale.js';
 import { createSlider, destroySlider } from './photo-effect.js';
 import { showSuccessMessage, showErrorMessage} from './message.js';
+import { sendData } from './api.js';
 
 const MAX_COUNT_HASHTAGS = 5;
 const VALID_HASHTAG_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -171,5 +172,3 @@ const onTextFieldKeydown = (evt) => {
     evt.stopPropagation();
   }
 }
-
-export { setUserFormSubmit, closeForm };

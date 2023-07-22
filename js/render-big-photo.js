@@ -64,7 +64,6 @@ const openBigPhotoModal = (data) => {
   closeButtonModalElement.addEventListener('click', onCloseButtonModalElementClick);
 };
 
-
 const onCloseButtonModalElementClick = () => closeBigPhotoModal();
 
 //закрытие модального окна
@@ -74,8 +73,6 @@ const closeBigPhotoModal = () => {
   document.removeEventListener('keydown', onDocumentKeydown);
   commentsLoaderElement.removeEventListener('click', onCloseButtonModalElementClick);
 };
-
-
 
 //функция закрытия модального окна по ESC
 function onDocumentKeydown (evt) {
