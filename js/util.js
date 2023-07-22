@@ -23,4 +23,4 @@ const showAlert = (message) => {
 }
 
 
-export {showAlert};
+export { showAlert };

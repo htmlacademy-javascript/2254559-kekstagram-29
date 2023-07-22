@@ -1,5 +1,8 @@
-import {resetScale, buttonScaleBigger, buttonScaleLittle, onButtonScaleBiggerClick, onButtonScaleLittleClick} from './scale.js';
-import {createSlider, destroySlider} from './photo-effect.js';
+import { resetScale, buttonScaleBigger, buttonScaleLittle, onButtonScaleBiggerClick, onButtonScaleLittleClick } from './scale.js';
+import { createSlider, destroySlider } from './photo-effect.js';
+import { ErrorMessage } from './data.js';
+import { showAlert } from './util.js';
+import { sendData } from './api.js';
 
 const MAX_COUNT_HASHTAGS = 5;
 const VALID_HASHTAG_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -76,29 +79,6 @@ pristine.addValidator(
   false
 );
 
-// функция проверки при нажатии кнопки для отправки формы
-const setUserFormSubmit = (onSuccess) => {
-  formElement.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    const isValid = pristine.validate();
-
-    if (isValid) {
-      const formData = new FormData(evt.target);
-      fetch(
-        'https://29.javascript.pages.academy/kekstagram',
-        {
-          method: 'POST',
-          body: formData,
-        },
-      )
-      .then(onSuccess)
-      .catch((err) => {
-        console.error(err);
-      });
-    }
-  });
-};
-
 //Кнопка отправки формы
 const blockSubmitButton = () => {
   submitButtonFormElement.disabled = true;
@@ -110,6 +90,23 @@ const unblockSubmitButton = () => {
   submitButtonFormElement.textContent = 'Опубликовать';
 };
 
+
+// функция проверки при нажатии кнопки для отправки формы
+const setUserFormSubmit = (onSuccess) => {
+  formElement.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(new FormData(evt.target))
+      .then(onSuccess)
+      .catch((err) => {
+        showAlert(err.message);
+      })
+      .finally (unblockSubmitButton)
+    }
+  });
+};
 
 //функция открытия окна формы загрузки фотографии
 const openForm = () => {
@@ -164,4 +161,4 @@ const onTextFieldKeydown = (evt) => {
   }
 }
 
-export {setUserFormSubmit, closeForm};
+export { setUserFormSubmit, closeForm };

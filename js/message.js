@@ -63,4 +63,4 @@ const closeErrorMessage = () => {
   bodyElement.removeEventListener('keydown', onCloseErrorMessage);
 };
 
-export{showSuccessMessage, showErrorMessage};
+export{ showSuccessMessage, showErrorMessage };

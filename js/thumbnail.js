@@ -1,4 +1,4 @@
-import {openBigPhotoModal} from './render-big-photo.js';
+import { openBigPhotoModal } from './render-big-photo.js';
 
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const containerElement = document.querySelector('.pictures');
@@ -27,4 +27,4 @@ const renderThumbnails = (pictures) => {
   containerElement.append(fragment);
 };
 
-export {renderThumbnails, createThumbnail};
+export { renderThumbnails, createThumbnail };
