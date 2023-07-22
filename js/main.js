@@ -1,5 +1,4 @@
 import { renderThumbnails } from './thumbnail.js';
-import { showSuccessMessage, showErrorMessage} from './message.js';
 import { closeForm, setUserFormSubmit } from './form.js';
 import { getData, sendData } from './api.js';
 import { showAlert } from './util.js';
@@ -12,16 +11,3 @@ try {
 } catch(err) {
   showAlert(err.message);
 }
-
-//алгоритм отправки данных на сервер
-
-setUserFormSubmit(async (data) => {
-  try {
-    await sendData(data);
-    closeForm();
-    showSuccessMessage();
-  } catch {
-    showErrorMessage();
-  }
-});
-

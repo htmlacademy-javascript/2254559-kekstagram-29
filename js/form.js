@@ -1,5 +1,6 @@
 import { resetScale, buttonScaleBigger, buttonScaleLittle, onButtonScaleBiggerClick, onButtonScaleLittleClick } from './scale.js';
 import { createSlider, destroySlider } from './photo-effect.js';
+import { showSuccessMessage, showErrorMessage} from './message.js';
 
 const MAX_COUNT_HASHTAGS = 5;
 const VALID_HASHTAG_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -87,18 +88,35 @@ const unblockSubmitButton = () => {
   submitButtonFormElement.textContent = 'Опубликовать';
 };
 
+const loadUserFormSubmit = async (data) => {
+  console.log(data);
+  try {
+    await sendData(data);
+    closeForm();
+    showSuccessMessage();
+  } catch {
+    showErrorMessage();
+  }
+};
 
 // функция проверки при нажатии кнопки для отправки формы
-const setUserFormSubmit = (callback) => {
-  formElement.addEventListener('submit', async (evt) => {
-    evt.preventDefault();
+
+const onFormElementSubmit = async (evt) => {
+  evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
       blockSubmitButton();
-      await callback(new FormData(evt.target))
+      await loadUserFormSubmit(new FormData(formElement))
       unblockSubmitButton();
     }
-  });
+};
+
+const setUserFormSubmit = () => {
+  formElement.addEventListener('submit', onFormElementSubmit);
+};
+
+const unsetUserFormSubmit = () => {
+  formElement.removeEventListener('submit', onFormElementSubmit);
 };
 
 //функция открытия окна формы загрузки фотографии
@@ -112,6 +130,7 @@ const openForm = () => {
   buttonScaleLittle.addEventListener('click', onButtonScaleLittleClick);
   buttonScaleBigger.addEventListener('click', onButtonScaleBiggerClick);
   createSlider();
+  setUserFormSubmit();
 };
 
 //функция закрытия окна формы
@@ -127,6 +146,7 @@ const closeForm = () => {
   pristine.reset();
   resetScale();
   destroySlider();
+  unsetUserFormSubmit();
 };
 
 //обработчик открытия формы
