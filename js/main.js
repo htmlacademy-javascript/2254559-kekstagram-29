@@ -1,7 +1,11 @@
-import {arrayPhotos} from './render-user-photos.js';
-import {renderThumbnails} from './thumbnail.js';
+import { renderThumbnails } from './thumbnail.js';
 import './form.js';
-import './scale.js';
-import './photo-effects.js';
+import { getData } from './api.js';
+import { showAlert } from './util.js';
 
-renderThumbnails(arrayPhotos);
+try {
+  const data = await getData();
+  renderThumbnails(data);
+} catch(err) {
+  showAlert(err.message);
+}
