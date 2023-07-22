@@ -1,6 +1,6 @@
 import { resetScale, buttonScaleBigger, buttonScaleLittle, onButtonScaleBiggerClick, onButtonScaleLittleClick } from './scale.js';
 import { createSlider, destroySlider } from './photo-effect.js';
-import { ErrorMessage } from './data.js';
+import { showErrorMessage, showSuccessMessage } from './message.js';
 import { showAlert } from './util.js';
 import { sendData } from './api.js';
 
@@ -99,9 +99,11 @@ const setUserFormSubmit = (onSuccess) => {
     if (isValid) {
       blockSubmitButton();
       sendData(new FormData(evt.target))
+      .then(showSuccessMessage())
       .then(onSuccess)
-      .catch((err) => {
-        showAlert(err.message);
+
+      .catch(() => {
+        showErrorMessage();
       })
       .finally (unblockSubmitButton)
     }
@@ -116,7 +118,6 @@ const openForm = () => {
   document.addEventListener('keydown', onDocumentKeydown);
   hashtagsFieldElement.addEventListener('keydown', onTextFieldKeydown);
   descriptionFieldElement.addEventListener('keydown', onTextFieldKeydown);
-  // formElement.addEventListener('submit', setUserFormSubmit);
   buttonScaleLittle.addEventListener('click', onButtonScaleLittleClick);
   buttonScaleBigger.addEventListener('click', onButtonScaleBiggerClick);
   createSlider();
@@ -130,7 +131,6 @@ const closeForm = () => {
   document.removeEventListener('keydown', onDocumentKeydown);
   hashtagsFieldElement.removeEventListener('keydown', onTextFieldKeydown);
   descriptionFieldElement.removeEventListener('keydown', onTextFieldKeydown);
-  // formElement.removeEventListener('submit', onSubmit);
   imgInputFieldForm.value = '';
   formElement.reset();
   pristine.reset();
