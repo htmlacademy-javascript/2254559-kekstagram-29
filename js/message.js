@@ -2,6 +2,7 @@ const successMessageTemplate = document.querySelector('#success').content.queryS
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
 const bodyElement = document.querySelector('body');
 
+const ErrorGetDataMessage = 'Не удалось загрузить данные. Попробуйте обновить страницу';
 
 const onDocumentKeydown = (evt, callback) => {
   if (evt.key === 'Escape') {
@@ -63,4 +64,4 @@ const closeErrorMessage = () => {
   bodyElement.removeEventListener('keydown', onCloseErrorMessage);
 };
 
-export{ showSuccessMessage, showErrorMessage };
+export{ showSuccessMessage, showErrorMessage, ErrorGetDataMessage };

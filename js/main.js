@@ -1,17 +1,27 @@
 import { renderThumbnails } from './thumbnail.js';
-import './form.js';
-import './scale.js';
-import './photo-effect.js';
-import { showSuccessMessage, showErrorMessage } from './message.js';
+import { showSuccessMessage, showErrorMessage, ErrorGetDataMessage } from './message.js';
 import { closeForm, setUserFormSubmit } from './form.js';
-import { getData } from './api.js';
+import { getData, sendData } from './api.js';
 import { showAlert } from './util.js';
 
 //алгоритм получения данных с сервера
-getData()
-  .then((usersPhoto) => renderThumbnails(usersPhoto))
-  .catch((err) => showAlert(err.message));
+
+try {
+  const data =await getData();
+  renderThumbnails(data);
+} catch {
+  showAlert(ErrorGetDataMessage);
+}
 
 //алгоритм отправки данных на сервер
-setUserFormSubmit(closeForm);
+
+setUserFormSubmit(async (data) => {
+  try {
+    await sendData(data);
+    closeForm();
+    showSuccessMessage();
+  } catch {
+    showErrorMessage();
+  }
+});
 
