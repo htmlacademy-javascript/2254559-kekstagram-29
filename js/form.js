@@ -76,7 +76,7 @@ pristine.addValidator(
   false
 );
 
-// функция проверки при отправке
+// функция проверки при нажатии кнопки для отправки формы
 const setUserFormSubmit = (onSuccess) => {
   formElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -91,7 +91,10 @@ const setUserFormSubmit = (onSuccess) => {
           body: formData,
         },
       )
-      .then(onSuccess);
+      .then(onSuccess)
+      .catch((err) => {
+        console.error(err);
+      });
     }
   });
 };
@@ -116,7 +119,7 @@ const openForm = () => {
   document.addEventListener('keydown', onDocumentKeydown);
   hashtagsFieldElement.addEventListener('keydown', onTextFieldKeydown);
   descriptionFieldElement.addEventListener('keydown', onTextFieldKeydown);
-  // formElement.addEventListener('submit', onSubmit);
+  // formElement.addEventListener('submit', setUserFormSubmit);
   buttonScaleLittle.addEventListener('click', onButtonScaleLittleClick);
   buttonScaleBigger.addEventListener('click', onButtonScaleBiggerClick);
   createSlider();
@@ -161,4 +164,4 @@ const onTextFieldKeydown = (evt) => {
   }
 }
 
-
+export {setUserFormSubmit, closeForm};
