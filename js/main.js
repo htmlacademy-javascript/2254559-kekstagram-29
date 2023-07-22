@@ -9,8 +9,8 @@ import { showAlert } from './util.js';
 try {
   const data =await getData();
   renderThumbnails(data);
-} catch {
-  showAlert(ErrorGetDataMessage);
+} catch(err) {
+  showAlert(err.message);
 }
 
 //алгоритм отправки данных на сервер
