@@ -8,9 +8,11 @@ const VALID_HASHTAG_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const VALID_HASHTAG_ERROR_MESSAGE = 'Использованы недопустимые символы';
 const UNIQ_HASHTAG_ERROR_MESSAGE = 'Хештеги не должны повторяться';
 const COUNT_HASHTAG_ERROR_MESSAGE = 'Максимальное количество хештегов - 5';
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const formElement = document.querySelector('.img-upload__form');
-const imgInputFieldForm = formElement.querySelector('.img-upload__input');
+const imgInputFieldForm = formElement.querySelector('.img-upload__input[type=file]');
+const previewPhoto = formElement.querySelector('.img-upload__preview img');
 const modalFormElement = formElement.querySelector('.img-upload__overlay');
 const closeButtonElement = modalFormElement.querySelector('.img-upload__cancel');
 const hashtagsFieldElement = modalFormElement.querySelector('.text__hashtags');
@@ -151,7 +153,18 @@ const closeForm = () => {
 };
 
 //обработчик открытия формы
-const onInputFieldChange = () => openForm();
+const onInputFieldChange = () => {
+  const file = imgInputFieldForm.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    previewPhoto.src = URL.createObjectURL(file);
+  }
+
+  openForm();
+};
+
 imgInputFieldForm.addEventListener('change', onInputFieldChange);
 
 //функция закрытия окна формы
