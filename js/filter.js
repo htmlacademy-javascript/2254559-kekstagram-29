@@ -6,7 +6,7 @@ const Filter = {
 };
 const filterElement = document.querySelector('.img-filters');
 let currentFilter = Filter.DEFAULT;
-let pictures =[];
+let pictures = [];
 
 const sortByRandom = () => Math.random() - 0.5;
 
@@ -43,7 +43,7 @@ const setOnFilterClick = (callback) => {
 };
 
 const init = (loadThumbnails, callback) => {
-  filterElement.classList.remove('img-filters--inactive')
+  filterElement.classList.remove('img-filters--inactive');
   pictures = [...loadThumbnails];
   setOnFilterClick(callback);
 };

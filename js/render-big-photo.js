@@ -44,12 +44,14 @@ const renderComments = (comments) => {
     commentsContainerElement.append(fragment);
     commentsCountElement.textContent = comments.length;
     commentsShownCountElement.textContent = commentsShown;
-  }
+  };
 };
+
+const onCloseButtonModalElementClick = () => closeBigPhotoModal();
 
 //открытие модального окна
 const openBigPhotoModal = (data) => {
-  const renderCommentsHandler = renderComments(data.comments)
+  const renderCommentsHandler = renderComments(data.comments);
   bigPhotoModalElement.querySelector('.big-picture__img img').src = data.url;
   bigPhotoModalElement.querySelector('.likes-count').textContent = data.likes;
   bigPhotoModalElement.querySelector('.comments-count').textContent = data.comments.length;
@@ -63,8 +65,6 @@ const openBigPhotoModal = (data) => {
   commentsLoaderElement.addEventListener('click', onCommentsLoaderElementClick);
   closeButtonModalElement.addEventListener('click', onCloseButtonModalElementClick);
 };
-
-const onCloseButtonModalElementClick = () => closeBigPhotoModal();
 
 //закрытие модального окна
 const closeBigPhotoModal = () => {

@@ -69,9 +69,9 @@ const createSlider = () => {
     format: {
       to: function (value) {
         if (Number.isInteger(value)) {
-          return value.toFixed(0);
+          return value.toFixed(2);
         }
-        return value.toFixed(1);
+        return value.toFixed(2);
       },
       from: function (value) {
         return parseFloat(value);
@@ -111,9 +111,9 @@ const getPhotoEfffect = (evt) => {
     const currentEffectValue = evt.target.value;
 
     if (currentEffectValue === 'none') {
-    sliderContainerElement.classList.add('hidden');
-    previewPhotoElement.style.filter = 'none';
-    sliderElementInput.value = '';
+      sliderContainerElement.classList.add('hidden');
+      previewPhotoElement.style.filter = 'none';
+      sliderElementInput.value = '';
     } else {
       sliderContainerElement.classList.remove('hidden');
       const effect = EFFECTS.find((item) => item.name === currentEffectValue);
