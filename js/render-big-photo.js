@@ -20,7 +20,7 @@ const createComment = ({ avatar, name, message }) => {
   return commentElement;
 };
 
-//функция создания комментариев
+//функция отрисовки комментариев
 const renderComments = (comments) => {
   let commentsShown = 0;
 
@@ -67,12 +67,12 @@ const openBigPhotoModal = (data) => {
 };
 
 //закрытие модального окна
-const closeBigPhotoModal = () => {
+function closeBigPhotoModal () {
   bigPhotoModalElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   commentsLoaderElement.removeEventListener('click', onCloseButtonModalElementClick);
-};
+}
 
 //функция закрытия модального окна по ESC
 function onDocumentKeydown (evt) {
@@ -82,4 +82,4 @@ function onDocumentKeydown (evt) {
   }
 }
 
-export {openBigPhotoModal};
+export { openBigPhotoModal };

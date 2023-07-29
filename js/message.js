@@ -28,11 +28,11 @@ const showSuccessMessage = () => {
   bodyElement.addEventListener('keydown', onCloseSuccessMessage);
 };
 
-const closeSuccessMessage = () => {
+function closeSuccessMessage () {
   bodyElement.querySelector('.success').remove();
   bodyElement.removeEventListener('click', onCloseSuccessClickDocument);
   bodyElement.removeEventListener('keydown', onCloseSuccessMessage);
-};
+}
 
 
 //=============сообщение об ошибке загрузки фотографии
@@ -53,10 +53,10 @@ const showErrorMessage = () => {
   bodyElement.addEventListener('keydown', onCloseErrorMessage);
 };
 
-const closeErrorMessage = () => {
+function closeErrorMessage () {
   bodyElement.querySelector('.error').remove();
   bodyElement.removeEventListener('click', onCloseErrorClickDocument);
   bodyElement.removeEventListener('keydown', onCloseErrorMessage);
-};
+}
 
 export{ showSuccessMessage, showErrorMessage };
