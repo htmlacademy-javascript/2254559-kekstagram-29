@@ -12,4 +12,5 @@ try {
   renderThumbnails(getFilteredThumbnails());
 } catch(err) {
   showAlert(err.message);
-};
+}
+

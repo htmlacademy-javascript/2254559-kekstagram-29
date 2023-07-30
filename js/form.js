@@ -13,6 +13,7 @@ const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const formElement = document.querySelector('.img-upload__form');
 const imgInputFieldForm = formElement.querySelector('.img-upload__input[type=file]');
 const previewPhoto = formElement.querySelector('.img-upload__preview img');
+const effectsPreview = formElement.querySelectorAll('.effects__preview');
 const modalFormElement = formElement.querySelector('.img-upload__overlay');
 const closeButtonElement = modalFormElement.querySelector('.img-upload__cancel');
 const hashtagsFieldElement = modalFormElement.querySelector('.text__hashtags');
@@ -160,6 +161,9 @@ const onInputFieldChange = () => {
 
   if (matches) {
     previewPhoto.src = URL.createObjectURL(file);
+    effectsPreview.forEach((preview) => {
+      preview.style.backgroundImage = `url('${previewPhoto.src}')`;
+    });
   }
 
   openForm();
