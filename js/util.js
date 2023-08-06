@@ -21,13 +21,13 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-function debounce (callback, timeoutDelay = 600) {
+const debounce = (callback, timeoutDelay = 600) => {
   let timeoutId;
 
   return (...rest) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-}
+};
 
 export { showAlert, debounce };

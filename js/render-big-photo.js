@@ -44,8 +44,23 @@ const renderComments = (comments) => {
     commentsShownCountElement.textContent = commentsShown;
   };
 };
+const closeBigPhotoModal = () => {
+  bigPhotoModalElement.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+};
 
-const onCloseButtonModalElementClick = () => closeBigPhotoModal();
+const onDocumentKeydown = (evt) => {
+  evt.preventDefault();
+  if (evt.key === 'Escape') {
+    closeBigPhotoModal();
+  }
+};
+
+const onCloseButtonModalElementClick = () => {
+  document.removeEventListener('keydown', onDocumentKeydown);
+  commentsLoaderElement.removeEventListener('click', onCloseButtonModalElementClick);
+  closeBigPhotoModal();
+};
 
 const openBigPhotoModal = (data) => {
   const renderCommentsHandler = renderComments(data.comments);
@@ -62,19 +77,5 @@ const openBigPhotoModal = (data) => {
   commentsLoaderElement.addEventListener('click', onCommentsLoaderElementClick);
   closeButtonModalElement.addEventListener('click', onCloseButtonModalElementClick);
 };
-
-function closeBigPhotoModal () {
-  bigPhotoModalElement.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onDocumentKeydown);
-  commentsLoaderElement.removeEventListener('click', onCloseButtonModalElementClick);
-}
-
-function onDocumentKeydown (evt) {
-  evt.preventDefault();
-  if (evt.key === 'Escape') {
-    closeBigPhotoModal();
-  }
-}
 
 export { openBigPhotoModal };
