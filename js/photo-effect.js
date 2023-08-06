@@ -56,7 +56,6 @@ const sliderElement = modalFormElement.querySelector('.effect-level__slider');
 const previewPhotoElement = modalFormElement.querySelector('.img-upload__preview img');
 const effectsListElement = modalFormElement.querySelector('.img-upload__effects');
 
-//создание слайдера
 const createSlider = () => {
   noUiSlider.create(sliderElement, {
     range: {
@@ -83,7 +82,6 @@ const createSlider = () => {
   sliderContainerElement.classList.add('hidden');
 };
 
-//обновление данных слайдера
 const updateSlider = (item) => {
   sliderElement.noUiSlider.updateOptions({
     range: {
@@ -104,9 +102,7 @@ const updateSlider = (item) => {
   sliderElement.noUiSlider.on('update', onUpdateSliderValue);
 };
 
-
-//функция применения эффекта на фотографии
-const getPhotoEfffect = (evt) => {
+const onEffectChange = (evt) => {
   if (evt.target.classList.contains('effects__radio')) {
     const currentEffectValue = evt.target.value;
 
@@ -123,12 +119,8 @@ const getPhotoEfffect = (evt) => {
   }
 };
 
-//функция обновления значений слайдера
+effectsListElement.addEventListener('change', onEffectChange);
 
-
-effectsListElement.addEventListener('change', getPhotoEfffect);
-
-//удаление слайдера
 const destroySlider = () => {
   sliderElement.noUiSlider.destroy();
 };

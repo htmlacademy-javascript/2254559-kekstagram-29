@@ -1,6 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
 
-//функция показа сообщения с ошибкой
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
@@ -30,6 +29,5 @@ function debounce (callback, timeoutDelay = 600) {
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
 }
-
 
 export { showAlert, debounce };

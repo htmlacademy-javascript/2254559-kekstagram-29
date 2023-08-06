@@ -10,8 +10,6 @@ const onDocumentKeydown = (evt, callback) => {
   }
 };
 
-//============сообщение о загрузке фотографиии
-
 const onSuccessButtonClick = () => closeSuccessMessage();
 const onCloseSuccessMessage = (evt) => onDocumentKeydown(evt, closeSuccessMessage);
 const onCloseSuccessClickDocument = (evt) => {
@@ -33,9 +31,6 @@ function closeSuccessMessage () {
   bodyElement.removeEventListener('click', onCloseSuccessClickDocument);
   bodyElement.removeEventListener('keydown', onCloseSuccessMessage);
 }
-
-
-//=============сообщение об ошибке загрузки фотографии
 
 const onErrorButtonClick = () => closeErrorMessage();
 const onCloseErrorMessage = (evt) => onDocumentKeydown(evt, closeErrorMessage);
