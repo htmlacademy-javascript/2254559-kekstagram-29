@@ -20,7 +20,6 @@ const hashtagsFieldElement = modalFormElement.querySelector('.text__hashtags');
 const descriptionFieldElement = modalFormElement.querySelector('.text__description');
 const submitButtonFormElement = modalFormElement.querySelector('.img-upload__submit');
 
-//валидация формы
 const pristine = new Pristine
 (formElement,
 {
@@ -29,19 +28,16 @@ const pristine = new Pristine
 },
 false);
 
-//подготовка текстовой строки хештега к проверке
 const normalizeHashtag = (text) => {
   return text.trim().split(' ').filter((item) => Boolean(item.length));
 };
 
-//проверка хештега на допустимость символов
 const hasValidHashtag = (value) => {
    return normalizeHashtag(value).every(
     (item) => VALID_HASHTAG_SYMBOLS.test(item)
   );
 }
 
-//валидатор по валидности символов
 pristine.addValidator(
   hashtagsFieldElement,
   hasValidHashtag,
@@ -50,12 +46,10 @@ pristine.addValidator(
   false
 );
 
-//проверка по количеству хештегов
 const hasValidCount = (value) => {
   return normalizeHashtag(value).length <= MAX_COUNT_HASHTAGS;
 };
 
-// валидатор по кол-ву хештегов
 pristine.addValidator(
   hashtagsFieldElement,
   hasValidCount,
@@ -64,7 +58,6 @@ pristine.addValidator(
   false
 );
 
-//проверка на уникальность хештегов
 const hasUniqHashtag = (value) => {
   const lowerCaseHashtags = normalizeHashtag(value).map(
     (item) => item.toLowerCase()
@@ -72,7 +65,6 @@ const hasUniqHashtag = (value) => {
   return lowerCaseHashtags.length === new Set(lowerCaseHashtags).size;
 };
 
-//валидатор уникальности хештегов
 pristine.addValidator(
   hashtagsFieldElement,
   hasUniqHashtag,
@@ -81,7 +73,6 @@ pristine.addValidator(
   false
 );
 
-//Кнопка отправки формы
 const blockSubmitButton = () => {
   submitButtonFormElement.disabled = true;
   submitButtonFormElement.textContent = 'Отправка данных';
@@ -93,7 +84,6 @@ const unblockSubmitButton = () => {
 };
 
 const loadUserFormSubmit = async (data) => {
-  console.log(data);
   try {
     await sendData(data);
     closeForm();
@@ -102,8 +92,6 @@ const loadUserFormSubmit = async (data) => {
     showErrorMessage();
   }
 };
-
-// функция проверки при нажатии кнопки для отправки формы
 
 const onFormElementSubmit = async (evt) => {
   evt.preventDefault();
@@ -123,7 +111,6 @@ const unsetUserFormSubmit = () => {
   formElement.removeEventListener('submit', onFormElementSubmit);
 };
 
-//функция открытия окна формы загрузки фотографии
 const openForm = () => {
   modalFormElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -137,7 +124,6 @@ const openForm = () => {
   setUserFormSubmit();
 };
 
-//функция закрытия окна формы
 const closeForm = () => {
   modalFormElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -153,7 +139,6 @@ const closeForm = () => {
   unsetUserFormSubmit();
 };
 
-//обработчик открытия формы
 const onInputFieldChange = () => {
   const file = imgInputFieldForm.files[0];
   const fileName = file.name.toLowerCase();
@@ -171,11 +156,8 @@ const onInputFieldChange = () => {
 
 imgInputFieldForm.addEventListener('change', onInputFieldChange);
 
-//функция закрытия окна формы
 const onCloseButtonClick = () => closeForm();
 
-
-//функция закрятия по нажатию ESC
 const onDocumentKeydown = (evt) => {
   if (evt.key === 'Escape') {
     evt.preventDefault();
@@ -183,7 +165,6 @@ const onDocumentKeydown = (evt) => {
   }
 }
 
-//функция отмены закрытия модального окна, при фокусе полей хештег, комментарий
 const onTextFieldKeydown = (evt) => {
   if (evt.key === 'Escape') {
     evt.stopPropagation();

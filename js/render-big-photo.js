@@ -9,7 +9,6 @@ const commentsLoaderElement = bigPhotoModalElement.querySelector('.comments-load
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
 const commentsContainerElement = document.querySelector('.social__comments');
 
-//функция создания комментария
 const createComment = ({ avatar, name, message }) => {
   const commentElement = commentTemplate.cloneNode(true);
 
@@ -20,7 +19,6 @@ const createComment = ({ avatar, name, message }) => {
   return commentElement;
 };
 
-//функция отрисовки комментариев
 const renderComments = (comments) => {
   let commentsShown = 0;
 
@@ -46,10 +44,24 @@ const renderComments = (comments) => {
     commentsShownCountElement.textContent = commentsShown;
   };
 };
+const closeBigPhotoModal = () => {
+  bigPhotoModalElement.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+};
 
-const onCloseButtonModalElementClick = () => closeBigPhotoModal();
+const onDocumentKeydown = (evt) => {
+  evt.preventDefault();
+  if (evt.key === 'Escape') {
+    closeBigPhotoModal();
+  }
+};
 
-//открытие модального окна
+const onCloseButtonModalElementClick = () => {
+  document.removeEventListener('keydown', onDocumentKeydown);
+  commentsLoaderElement.removeEventListener('click', onCloseButtonModalElementClick);
+  closeBigPhotoModal();
+};
+
 const openBigPhotoModal = (data) => {
   const renderCommentsHandler = renderComments(data.comments);
   bigPhotoModalElement.querySelector('.big-picture__img img').src = data.url;
@@ -65,21 +77,5 @@ const openBigPhotoModal = (data) => {
   commentsLoaderElement.addEventListener('click', onCommentsLoaderElementClick);
   closeButtonModalElement.addEventListener('click', onCloseButtonModalElementClick);
 };
-
-//закрытие модального окна
-function closeBigPhotoModal () {
-  bigPhotoModalElement.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onDocumentKeydown);
-  commentsLoaderElement.removeEventListener('click', onCloseButtonModalElementClick);
-}
-
-//функция закрытия модального окна по ESC
-function onDocumentKeydown (evt) {
-  evt.preventDefault();
-  if (evt.key === 'Escape') {
-    closeBigPhotoModal();
-  }
-}
 
 export { openBigPhotoModal };
